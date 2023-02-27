@@ -45,6 +45,6 @@ jobs:
           HD_FORCE_BOT_PM: "True"
           HD_FSUB_IDS: "-1001658241069 -1001858689276"
           HD_LOG_COMMAND: "cmd"
-          HD_UPSTREAM_REPO: "https://fine008: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@github.com/fine008/edithxcloud1"
+          HD_UPSTREAM_REPO: "https://fine008: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@github.com/fine008/PROJECT-EDITH"
           HD_UPSTREAM_BRANCH: "beta"
           HD_RESTART_COMMAND: "release"
