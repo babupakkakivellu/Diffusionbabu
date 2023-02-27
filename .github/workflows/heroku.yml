@@ -1,0 +1,51 @@
+name: Manually Deploy to Heroku
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          usedocker: true
+          docker_heroku_process_type: web
+          stack: "container"
+          region: "us"
+        env:
+          HD_BOT_TOKEN: ${{secrets.BOT_TOKEN}}
+          HD_OWNER_ID: "1398302310"
+          HD_TELEGRAM_API: "25902751"
+          HD_TELEGRAM_HASH: "3b36bdefea2a0ff714a1ae7d8b0c89e0"
+          HD_DATABASE_URL: "mongodb+srv://User:41044104@cluster0.36ybcb3.mongodb.net/?retryWrites=true&w=majority"
+          HD_BASE_URL: "https://${{secrets.HEROKU_APP_NAME}}.herokuapp.com"
+          HD_STOP_DUPLICATE: "True"
+          HD_IS_TEAM_DRIVE: "True"
+          HD_USE_SERVICE_ACCOUNTS: "True"
+          HD_VIEW_LINK: "True"
+          HD_SOURCE_LINK: "True"
+          HD_TOTAL_TASKS_LIMIT: "6"
+          HD_USER_TASKS_LIMIT: "2"
+          HD_TORRENT_DIRECT_LIMIT: "40"
+          HD_ZIP_UNZIP_LIMIT: "30"
+          HD_CLONE_LIMIT: "150"
+          HD_LEECH_LIMIT: "20"
+          HD_LEECH_LOG: "-1001858689276"
+          HD_LEECH_LOG_URL: "https://t.me/edithlog"
+          HD_LEECH_ENABLED: "True"
+          HD_AUTHORIZED_CHATS: "-1001759081418"
+          HD_STATUS_UPDATE_INTERVAL: "5"
+          HD_INCOMPLETE_TASK_NOTIFIER: "True"
+          HD_STATUS_LIMIT: "3"
+          HD_BOT_PM: "True"
+          HD_FORCE_BOT_PM: "True"
+          HD_FSUB_IDS: "-1001658241069 -1001858689276"
+          HD_USER_SESSION_STRING: ${{secrets.USER_SESSION_STRING}}
+          HD_RESTART_COMMAND: "release"
+          HD_LOG_COMMAND: "cd"
+          HD_UPSTREAM_REPO: "https://fine008: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@github.com/fine008/edithxcloud1"
+          HD_UPSTREAM_BRANCH: "master"
