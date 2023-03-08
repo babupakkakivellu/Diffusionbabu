@@ -124,25 +124,6 @@ def _clone(message, bot):
     if not (is_gdrive_link(link) or (link.strip().isdigit() and multi == 0) or is_gdtot_link(link) or is_udrive_link(link) or is_sharer_link(link) or is_sharedrive_link(link) or is_filepress_link(link) or is_unified_link(link)):
         return sendMessage("Send Gdrive or GDToT/HubDrive/DriveHub(ws)/KatDrive/Kolop/DriveFire/FilePress/SharerPw/ShareDrive link along with command or by replying to the link by command\n\n<b>Multi links only by replying to first link/file:</b>\n<code>/cmd</code> 10(number of links/files)", bot, message)
 
-    is_gdtot = is_gdtot_link(link)
-    is_unified = is_unified_link(link)
-    is_udrive = is_udrive_link(link)
-    if (is_gdtot or is_unified or is_udrive):
-        try:
-            msg = sendMessage(f"Processing: <code>{link}</code>", bot, message)
-            LOGGER.info(f"Processing: {link}")
-            if is_unified:
-                link = unified(link)
-            if is_gdtot:
-                link = gdtot(link)
-            if is_udrive:
-                link = udrive(link)
-            LOGGER.info(f"Processing GdToT: {link}")
-            deleteMessage(bot, msg)
-        except DirectDownloadLinkException as e:
-            deleteMessage(bot, msg)
-            return sendMessage(str(e), bot, message)
-
     timeout = 60
     listener = [bot, message, c_index, u_index, timeout, time(), tag, link]
     if ((len(CATEGORY_NAMES) > 1 and len(CATUSR) == 0) or (len(CATEGORY_NAMES) >= 1 and len(CATUSR) > 1)) and shwbtns:
@@ -187,16 +168,20 @@ def start_clone(listelem):
     reply_to = message.reply_to_message
 
     is_udrive = is_udrive_link(link)
+    is_gdtot = is_gdtot_link(link)
     is_sharer = is_sharer_link(link)
     is_sharedrive = is_sharedrive_link(link)
     is_filepress = is_filepress_link(link)
     is_unified = is_unified_link(link)
-    if (is_udrive or is_sharer or is_sharedrive or is_filepress or is_unified):
+    if (is_udrive or is_gdtot or is_sharer or is_sharedrive or is_filepress or is_unified):
         try:
             LOGGER.info(f"Processing: {link}")
             if is_udrive:
                 msg = sendMessage(f"UDRIVE LINK DETECTED !", bot, message)
                 link = udrive(link)
+            elif is_gdtot:
+                msg = sendMessage(f"GDToT LINK DETECTED !", bot, message)
+                link = gdtot(link)
             elif is_sharer:
                 msg = sendMessage(f"SHARER LINK DETECTED !", bot, message)
                 link = sharer_pw_dl(link)
