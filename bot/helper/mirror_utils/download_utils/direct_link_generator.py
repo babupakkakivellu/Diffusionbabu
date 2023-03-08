@@ -102,6 +102,8 @@ def direct_link_generator(link: str):
         return filepress(link)
     elif is_unified_link(link):
         return unified(link)
+    elif any(x in link for x in ['wetransfer.com', 'we.tl']):
+        return wetransfer(link)
     elif any(x in link for x in fmed_list):
         return fembed(link)
     elif any(x in link for x in ['sbembed.com', 'watchsb.com', 'streamsb.net', 'sbplay.org']):
@@ -473,6 +475,27 @@ def racaty(url: str) -> str:
     dl_url = rsoup.find("a", {"id": "uniqueExpirylink"})[
         "href"].replace(" ", "%20")
     return dl_url
+
+def wetransfer(url):
+    rget = create_scraper().request
+    try:
+        url = rget('get', url).url
+        json_data = {
+            'security_hash': url.split('/')[-1],
+            'intent': 'entire_transfer'
+            }
+        res = rget('POST', f'https://wetransfer.com/api/v4/transfers/{url.split("/")[-2]}/download', json=json_data).json()
+    except IndexError:
+        raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
+    if "direct_link" in res:
+        return res["direct_link"]
+    elif "message" in res:
+        raise DirectDownloadLinkException(f"ERROR: {res['message']}")
+    elif "error" in res:
+        raise DirectDownloadLinkException(f"ERROR: {res['error']}")
+    else:
+        raise DirectDownloadLinkException("ERROR: cannot find direct link")
+
 
 
 def fichier(link: str) -> str:
