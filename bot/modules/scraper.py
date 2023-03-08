@@ -90,7 +90,7 @@ def scrapper(update, context):
         gd_txt = ""
         r = rget(link)
         soup = BeautifulSoup(r.text, "html.parser")
-        links = soup.select('a[href*="filepress"]')
+        links = soup.select('a[href*="gdflix"]')
         gd_txt = f"Total Links Found : {len(links)}\n\n"
         await editMessage(gd_txt, sent)
         for no, link in enumerate(links, start=1):
@@ -100,7 +100,7 @@ def scrapper(update, context):
             await editMessage(gd_txt, sent)
             await asleep(1.5)
             if len(gd_txt) > 4000:
-                sent = await sendMessage("<i>Running More Scrape ...</i>", c, message)
+                sent = sendMessage("<i>Running More Scrape ...</i>", context.bot, update.message)
                 gd_txt = ""
 
     elif "cinevood" in link:
