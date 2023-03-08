@@ -98,7 +98,7 @@ def scrapper(update, context):
             t = rget(gdlk)
             soupt = BeautifulSoup(t.text, "html.parser")
             title = soupt.select('meta[property^="og:description"]')
-            gd_txt += f"{no}. <code>{(title[0]['content']).replace('Download ' , '')}</code>\n{gdlk}\n\n"
+            gd_txt += f"{no}. <code>{title}</code>\n{gdlk}\n\n"
             editMessage(gd_txt, sent)
             asleep(1.5)
             if len(gd_txt) > 4000:
