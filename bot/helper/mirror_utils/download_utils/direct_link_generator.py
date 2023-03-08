@@ -6,6 +6,8 @@ from math import pow, floor
 from http.cookiejar import MozillaCookieJar
 from requests import get as rget, head as rhead, post as rpost, Session as rsession
 from re import findall as re_findall, sub as re_sub, match as re_match, search as re_search, compile as re_compile, DOTALL
+from uuid import uuid4
+from re import findall, match, search, sub
 from time import sleep, time
 from urllib.parse import quote, unquote, urlparse
 from json import loads as jsonloads
