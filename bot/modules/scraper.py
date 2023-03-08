@@ -97,7 +97,7 @@ def scrapper(update, context):
             gdlk = link['href']
             t = rget(gdlk)
             soupt = BeautifulSoup(t.text, "html.parser")
-            title = soupt.select('meta[property^="og:description"]')
+            title = link.get_text()
             gd_txt += f"{no}. <code>{title}</code>\n{gdlk}\n\n"
             editMessage(gd_txt, sent)
             asleep(1.5)
