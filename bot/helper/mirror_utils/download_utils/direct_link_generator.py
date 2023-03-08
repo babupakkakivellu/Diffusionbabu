@@ -585,7 +585,7 @@ def krakenfiles(page_link: str) -> str:
         raise DirectDownloadLinkException(
             f"ERROR: Failed to acquire download URL from kraken for : {page_link}")
 
-def gdtot(url):
+def gdtot(url) -> str:  # sourcery skip: inline-immediately-returned-variable
     cget = create_scraper().request
     try:
         res = cget('GET', f'https://gdbot.xyz/file/{url.split("/")[-1]}')
@@ -599,23 +599,22 @@ def gdtot(url):
             res = cget("GET",f"{p_url.scheme}://{p_url.hostname}/ddl/{url.split('/')[-1]}")
         except Exception as e:
             raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
-        if (drive_link := findall(r"myDl\('(.*?)'\)", res.text)) and "drive.google.com" in drive_link[0]:
+        if (drive_link := re_findall(r"myDl\('(.*?)'\)", res.text)) and "drive.google.com" in drive_link[0]:
             return drive_link[0]
         else:
-            raise DirectDownloadLinkException('ERROR: Drive Link not found, Try in your broswer')
+            raise DirectDownloadLinkException('ERROR: Drive Link not found')
     token_url = token_url[0]
     try:
         token_page = cget('GET', token_url)
     except Exception as e:
         raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__} with {token_url}')
-    path = findall('\("(.*?)"\)', token_page.text)
+    path = re_findall('\("(.*?)"\)', token_page.text)
     if not path:
         raise DirectDownloadLinkException('ERROR: Cannot bypass this')
     path = path[0]
     raw = urlparse(token_url)
     final_url = f'{raw.scheme}://{raw.hostname}{path}'
     return sharer_scraper(final_url)
-
 
 def parse_info(res):
     info_parsed = {}
