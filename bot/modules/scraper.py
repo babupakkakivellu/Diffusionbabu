@@ -90,7 +90,7 @@ def scrapper(update, context):
         gd_txt = ""
         r = rget(link)
         soup = BeautifulSoup (r.text, "html.parser")
-        links = soup.select('a[href*=gdflix"]')
+        links = soup.select('a[href*="gdflix"]')
         gd_txt = f"Total Links Found : {len(links)}\n\n"
         editMessage(gd_txt, sent)
         for no, link in enumerate(links, start=1):
