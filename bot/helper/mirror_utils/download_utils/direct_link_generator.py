@@ -5,6 +5,7 @@ from os import path as ospath
 from math import pow, floor
 from http.cookiejar import MozillaCookieJar
 from requests import get as rget, head as rhead, post as rpost, Session as rsession
+from re import findall, match, search, sub
 from re import findall as re_findall, sub as re_sub, match as re_match, search as re_search, compile as re_compile, DOTALL
 from time import sleep, time
 from urllib.parse import urlparse, unquote
@@ -206,44 +207,59 @@ def ouo(url: str) -> str:
     return res.headers.get('Location')
 
 
-def zippy_share(url: str) -> str:
-    base_url = re_search('http.+.zippyshare.com', url).group()
-    response = rget(url)
-    pages = BeautifulSoup(response.text, "html.parser")
-    js_script = pages.find(
-        "div", style="margin-left: 24px; margin-top: 20px; text-align: center; width: 303px; height: 105px;")
-    if js_script is None:
-        js_script = pages.find(
-            "div", style="margin-left: -22px; margin-top: -5px; text-align: center;width: 303px;")
-    js_script = str(js_script)
-
+def zippyshare(url):
+    cget = create_scraper().request
     try:
-        var_a = re_findall(r"var.a.=.(\d+)", js_script)[0]
-        mtk = int(pow(int(var_a), 3) + 3)
-        uri1 = re_findall(r"\.href.=.\"/(.*?)/\"", js_script)[0]
-        uri2 = re_findall(r"\+\"/(.*?)\"", js_script)[0]
-    except:
-        try:
-            a, b = re_findall(r"var.[ab].=.(\d+)", js_script)
-            mtk = eval(f"{floor(int(a)/3) + int(a) % int(b)}")
-            uri1 = re_findall(r"\.href.=.\"/(.*?)/\"", js_script)[0]
-            uri2 = re_findall(r"\)\+\"/(.*?)\"", js_script)[0]
-        except:
-            try:
-                mtk = eval(re_findall(r"\+\((.*?).\+", js_script)[0] + "+ 11")
-                uri1 = re_findall(r"\.href.=.\"/(.*?)/\"", js_script)[0]
-                uri2 = re_findall(r"\)\+\"/(.*?)\"", js_script)[0]
-            except:
-                try:
-                    mtk = eval(re_findall(r"\+.\((.*?)\).\+", js_script)[0])
-                    uri1 = re_findall(r"\.href.=.\"/(.*?)/\"", js_script)[0]
-                    uri2 = re_findall(r"\+.\"/(.*?)\"", js_script)[0]
-                except Exception as err:
-                    LOGGER.error(err)
-                    raise DirectDownloadLinkException(
-                        "ERROR: Failed to Get Direct Link")
-    dl_url = f"{base_url}/{uri1}/{int(mtk)}/{uri2}"
-    return dl_url
+        url = cget('GET', url).url
+        resp = cget('GET', url)
+    except Exception as e:
+        raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
+    if not resp.ok:
+        raise DirectDownloadLinkException('ERROR: Something went wrong!!, Try in your browser')
+    if findall(r'>File does not exist on this server<', resp.text):
+        raise DirectDownloadLinkException('ERROR: File does not exist on server!!, Try in your browser')
+    pages = etree.HTML(resp.text).xpath("//script[contains(text(),'dlbutton')][3]/text()")
+    if not pages:
+        raise DirectDownloadLinkException('ERROR: Page not found!!')
+    js_script = pages[0]
+    uri1 = None
+    uri2 = None
+    method = ''
+    if omg:= findall(r"\.omg.=.(.*?);", js_script):
+        omg = omg[0]
+        method = f'omg = {omg}'
+        mtk = (eval(omg) * (int(omg.split("%")[0])%3)) + 18
+        uri1 = findall(r'"/(d/\S+)/"', js_script)
+        uri2 = findall(r'\/d.*?\+"/(\S+)";', js_script)
+    elif var_a := findall(r"var.a.=.(\d+)", js_script):
+        var_a = var_a[0]
+        method = f'var_a = {var_a}'
+        mtk = int(pow(int(var_a),3) + 3)
+        uri1 = findall(r"\.href.=.\"/(.*?)/\"", js_script)
+        uri2 = findall(r"\+\"/(.*?)\"", js_script)
+    elif var_ab := findall(r"var.[ab].=.(\d+)", js_script):
+        a = var_ab[0]
+        b = var_ab[1]
+        method = f'a = {a}, b = {b}'
+        mtk = eval(f"{floor(int(a)/3) + int(a) % int(b)}")
+        uri1 = findall(r"\.href.=.\"/(.*?)/\"", js_script)
+        uri2 = findall(r"\)\+\"/(.*?)\"", js_script)
+    elif unknown:= findall(r"\+\((.*?).\+", js_script):
+        method = f'unknown = {unknown[0]}'
+        mtk = eval(f"{unknown[0]}+ 11")
+        uri1 = findall(r"\.href.=.\"/(.*?)/\"", js_script)
+        uri2 = findall(r"\)\+\"/(.*?)\"", js_script)
+    elif unknown1:= findall(r"\+.\((.*?)\).\+", js_script):
+        method = f'unknown1 = {unknown1[0]}'
+        mtk = eval(unknown1[0])
+        uri1 = findall(r"\.href.=.\"/(.*?)/\"", js_script)
+        uri2 = findall(r"\+.\"/(.*?)\"", js_script)
+    else:
+        raise DirectDownloadLinkException("ERROR: Direct link not found")
+    if not any([uri1, uri2]):
+        raise DirectDownloadLinkException(f"ERROR: uri1 or uri2 not found with method {method}")
+    domain = urlparse(url).hostname
+    return f"https://{domain}/{uri1[0]}/{mtk}/{uri2[0]}"
 
 
 def yandex_disk(url: str) -> str:
@@ -304,15 +320,17 @@ def uptobox(url: str) -> str:
 
 
 def mediafire(url: str) -> str:
-    """ MediaFire direct link generator """
+    if final_link := findall(r'https?:\/\/download\d+\.mediafire\.com\/\S+\/\S+\/\S+', url):
+        return final_link[0]
+    cget = create_scraper().request
     try:
-        link = re_findall(r'\bhttps?://.*mediafire\.com\S+', url)[0]
-    except IndexError:
-        raise DirectDownloadLinkException("No MediaFire links found\n")
-    page = BeautifulSoup(rget(link).content, 'lxml')
-    info = page.find('a', {'aria-label': 'Download file'})
-    return info.get('href')
-
+        url = cget('get', url).url
+        page = cget('get', url).text
+    except Exception as e:
+        raise DirectDownloadLinkException(f"ERROR: {e.__class__.__name__}")
+    if not (final_link := findall(r"\'(https?:\/\/download\d+\.mediafire\.com\/\S+\/\S+\/\S+)\'", page)):
+        raise DirectDownloadLinkException("ERROR: No links found in this page")
+    return final_link[0]
 
 def osdn(url: str) -> str:
     """ OSDN direct link generator """
