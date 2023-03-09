@@ -141,7 +141,7 @@ def log(update, context):
 
 
 help_string = '''
-<b><a href='https://t.me/+AzhFjRTLz-5kMWRi'>EDITHCLOUD</a></b> - The Ultimate Telegram MIrror-Leech Group to Upload Your File & Link in Telegram
+<b><a href='https://t.me/weebz'>Weebzone</a></b> - The Ultimate Telegram MIrror-Leech Discussion Group to Upload Your File & Link in Telegram
 Choose a help category:
 '''
 
