@@ -370,7 +370,7 @@ def main():
         with open(".restartmsg") as f:
             chat_id, msg_id = map(int, f)
         try:
-            msg += f"😎 Restarted Successfully❗\n"
+            msg = f"😎 Restarted Successfully❗\n"
             msg += f"📅 DATE: {date}\n"
             msg += f"⌚ TIME: {time}\n"
             msg += f"🌐 TIMEZONE: {timez}\n"
