@@ -71,6 +71,7 @@ class _BotCommands:
         self.ExecCommand = f'exec{CMD_SUFFIX}'
         self.ClearLocalsCommand = f'clearlocals{CMD_SUFFIX}'
         self.UsageCommand = f'usage{CMD_SUFFIX}'
+        self.GdtotCommand = f'gdtot{CMD_SUFFIX}'
 
 
 BotCommands = _BotCommands()
