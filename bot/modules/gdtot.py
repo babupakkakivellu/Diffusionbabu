@@ -9,6 +9,7 @@ from telegram.ext import CommandHandler
 
 
 def search_gdtot(update, context):
+    query = update.message.text.split(maxsplit=1)[1]
     resp =  rget(f'https://gdbot.xyz/search?q={quote_plus(query)}')
     soup = BeautifulSoup(resp.text, 'html.parser')
     links = soup.select("a[href*='https://gdbot.xyz/file']")
