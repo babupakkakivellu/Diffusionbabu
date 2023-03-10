@@ -2,6 +2,10 @@ from bs4 import BeautifulSoup
 from re import compile as re_compile
 from requests import get as rget
 from urllib.parse import urlparse, quote_plus
+from bot.helper.telegram_helper.bot_commands import BotCommands
+from bot.helper.telegram_helper.filters import CustomFilters
+from telegram import update
+from telegram.ext import CommandHandler
 
 
 def search_gdtot(query):
@@ -22,3 +26,9 @@ def search_gdtot(query):
         result.append(text)
         text = ''
     return result
+
+
+search_gdtot_handler = CommandHandler(command=BotCommands.GdtotCommand, callback=search_gdtot,
+                                    filters=CustomFilters.owner_filter | CustomFilters.sudo_user, run_async=True)
+                                    
+dispatcher.add_handler(search_gdtot_handler)
