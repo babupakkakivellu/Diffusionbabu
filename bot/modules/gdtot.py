@@ -37,7 +37,7 @@ def search_gdtot(update, context):
                 text += f"<a href='{link}'><b>{str(urlparse(link).hostname).upper()}</b></a> "
             editMessage(txt)
             if len(text) > 4000:
-                sendMessage("text, context.bot, update.message)
+                sendMessage(text, context.bot, update.message)
                 text = ""
 
 dispatcher.add_handler(CommandHandler(BotCommands.GdtotCommand, search_gdtot, filters=CustomFilters.authorized_chat | CustomFilters.authorized_user))
