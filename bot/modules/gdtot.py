@@ -8,7 +8,7 @@ from bot import dispatcher
 from telegram.ext import CommandHandler
 
 
-def search_gdtot(query):
+def search_gdtot(update, context):
     resp =  rget(f'https://gdbot.xyz/search?q={quote_plus(query)}')
     soup = BeautifulSoup(resp.text, 'html.parser')
     links = soup.select("a[href*='https://gdbot.xyz/file']")
@@ -27,8 +27,5 @@ def search_gdtot(query):
         text = ''
     return result
 
-
-search_gdtot_handler = CommandHandler(command=BotCommands.GdtotCommand, search_gdtot,
-                                  filters=CustomFilters.owner_filter | CustomFilters.sudo_user)
-                                    
-dispatcher.add_handler(search_gdtot)
+dispatcher.add_handler(CommandHandler(BotCommands.GdtotCommand, search_gdtot,
+                              filters=CustomFilters.authorized_chat | CustomFilters.authorized_user))
