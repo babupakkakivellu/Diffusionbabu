@@ -35,8 +35,7 @@ def search_gdtot(update, context):
             link = x['href']
             if 'gdbot.xyz' not in link:
                 text += f"<a href='{link}'><b>{str(urlparse(link).hostname).upper()}</b></a> "
-        editMessage(txt)
-            asleep(1.5)
+            editMessage(txt)
             if len(text) > 4000:
                 sendMessage("text, context.bot, update.message)
                 text = ""
