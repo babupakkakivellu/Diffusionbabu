@@ -6,6 +6,8 @@ from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import sendMessage, editMessage
 from bot import dispatcher
+from asyncio import sleep as asleep
+from time import sleep
 from telegram.ext import CommandHandler
 
 
@@ -31,7 +33,10 @@ def search_gdtot(update, context):
             link = x['href']
             if 'gdbot.xyz' not in link:
                 text += f"<a href='{link}'><b>{str(urlparse(link).hostname).upper()}</b></a> "
-        text += '\n\n'
-        sendMessage(text, context.bot, update.message)
-        text = ""
+        editMessage(txt)
+            asleep(1.5)
+            if len(text) > 4000:
+                sendMessage("text, context.bot, update.message)
+                text = ""
+
 dispatcher.add_handler(CommandHandler(BotCommands.GdtotCommand, search_gdtot, filters=CustomFilters.authorized_chat | CustomFilters.authorized_user))
