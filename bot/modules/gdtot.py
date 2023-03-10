@@ -29,6 +29,6 @@ def search_gdtot(query):
 
 
 search_gdtot_handler = CommandHandler(command=BotCommands.GdtotCommand, search_gdtot,
-                                    filters=CustomFilters.owner_filter | CustomFilters.sudo_user, run_async=True)
+                               filters=CustomFilters.owner_filter | CustomFilters.sudo_user)
                                     
 dispatcher.add_handler(search_gdtot)
