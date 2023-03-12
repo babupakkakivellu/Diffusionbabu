@@ -90,15 +90,15 @@ def scrapper(update, context):
         gd_txt = ""
         r = rget(link)
         soup = BeautifulSoup (r.text, "html.parser")
-        links = soup.select('a[href*="gdtot"]')
+        links = soup.select('a[href*="filepress"]')
         gd_txt = f"Total Links Found : {len(links)}\n\n"
         editMessage(gd_txt, sent)
         for no, link in enumerate(links, start=1):
             gdlk = link['href']
             t = rget(gdlk)
             soupt = BeautifulSoup(t.text, "html.parser")
-            title = soupt.select('meta[property^="og:description"]')
-            gd_txt += f"{no}. <code>{(title[0]['content']).replace('Download ' , '')}</code>\n{gdlk}\n\n"
+            title = link.get_text()
+            gd_txt += f"{no}. <code>{title}</code>\n{gdlk}\n\n"
             editMessage(gd_txt, sent)
             asleep(1.5)
             if len(gd_txt) > 4000:

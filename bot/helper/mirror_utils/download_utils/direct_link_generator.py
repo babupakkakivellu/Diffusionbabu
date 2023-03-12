@@ -6,8 +6,9 @@ from math import pow, floor
 from http.cookiejar import MozillaCookieJar
 from requests import get as rget, head as rhead, post as rpost, Session as rsession
 from re import findall as re_findall, sub as re_sub, match as re_match, search as re_search, compile as re_compile, DOTALL
+from uuid import uuid4
 from time import sleep, time
-from urllib.parse import urlparse, unquote
+from urllib.parse import quote, unquote, urlparse
 from json import loads as jsonloads
 from lk21 import Bypass
 from lxml import etree
@@ -611,7 +612,6 @@ def gdtot(url: str) -> str:
         raise DirectDownloadLinkException(
             "ERROR: Try in your broswer, mostly file not found or user limit exceeded!")
     return f'https://drive.google.com/open?id={decoded_id}'
-
 
 def parse_info(res):
     info_parsed = {}

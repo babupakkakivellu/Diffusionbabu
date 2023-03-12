@@ -23,7 +23,7 @@ from .helper.telegram_helper.button_build import ButtonMaker
 from bot import config_dict, botStartTime, Interval, QbInterval, LOGGER, DATABASE_URL, bot, dispatcher, updater, IGNORE_PENDING_REQUESTS, \
                 app, main_loop
 from .modules import authorize, list, cancel_mirror, mirror_status, mirror_leech, clone, ytdlp, shell, eval, bot_settings, \
-                     delete, count, users_settings, search, rss, wayback, usage, speedtest, anilist, imdb, bt_select, mediainfo, hash, \
+                     delete, count, users_settings, search, rss, wayback, usage, gdtot, speedtest, anilist, imdb, bt_select, mediainfo, hash, \
                      scraper, pictures, save_msg, sel_cat
 
 version = "5.2.0"
@@ -141,7 +141,7 @@ def log(update, context):
 
 
 help_string = '''
-<b><a href='https://t.me/+AzhFjRTLz-5kMWRi'>EDITHCLOUD</a></b> - The Ultimate Telegram MIrror-Leech Group to Upload Your File & Link in Telegram
+<b><a href='https://t.me/weebz'>Weebzone</a></b> - The Ultimate Telegram MIrror-Leech Discussion Group to Upload Your File & Link in Telegram
 Choose a help category:
 '''
 
@@ -370,8 +370,7 @@ def main():
         with open(".restartmsg") as f:
             chat_id, msg_id = map(int, f)
         try:
-            msg = f"🏆 EDITH GROUP 🎉 \n"
-            msg += f"😎 Restarted Successfully❗\n"
+            msg = f"😎 Restarted Successfully❗\n"
             msg += f"📅 DATE: {date}\n"
             msg += f"⌚ TIME: {time}\n"
             msg += f"🌐 TIMEZONE: {timez}\n"
