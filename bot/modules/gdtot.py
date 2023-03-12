@@ -29,7 +29,7 @@ def search_gdtot(update, context):
         text += f"{str(i).zfill(3)}. {str(title).strip()}\n{inf}\n"
         for x in soup.select('a'):
             link = x['href']
-            if any(x in link for x in ['new6.gdtot.cfd', 'gdflix.lol']):
+            if any(x in link for x in ['new6.gdtot.cfd']):
                 text += f"<a href='{link}'><b>{str(urlparse(link).hostname).upper()}</b></a> "
         text += '\n\n'
         sendMessage(text, context.bot, update.message)
