@@ -24,9 +24,9 @@ def search_gdtot(update, context):
     info = [x.string for x in soup.find_all('span', string=re_compile(r'Size*'))]
     titles = [x.string for x in soup.find_all('a')[5:]]
     text = ''
-    for i, (title, inf, link) in enumerate(zip(titles, info, links), start=3):
+    for i, (title, inf, link) in enumerate(zip(titles, info, links), start=1):
         soup = BeautifulSoup(rget(link['href']).text, 'html.parser')
-        text += f"{str(i).zfill(3)}. {str(title).strip()}\n{inf}\n"
+        text += f"{str(i).zfill(1)}. {str(title).strip()}\n{inf}\n"
         for x in soup.select('a'):
             link = x['href']
             if 'gdbot.xyz' not in link:
