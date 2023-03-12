@@ -25,12 +25,12 @@ def search_gdtot(update, context):
     titles = [x.string for x in soup.find_all('a')[5:]]
     text = ''
     for i, (title, inf, link) in enumerate(zip(titles, info, links), start=1):
-        soup = BeautifulSoup(rget(link['href*="gdtot"']).text, 'html.parser')
+        soup = BeautifulSoup(rget(link['href']).text, 'html.parser')
         text += f"{str(i).zfill(3)}. {str(title).strip()}\n{inf}\n"
         for x in soup.select('a'):
             link = x['href']
             if 'gdbot.xyz' not in link:
-                text += f"<a href*="gdtot"><b>{str(urlparse(link).hostname).upper()}</b></a> "
+                text += f"<a href='{link}'><b>{str(urlparse(link).hostname).upper()}</b></a> "
         text += '\n\n'
         sendMessage(text, context.bot, update.message)
         text = ""
