@@ -15,12 +15,12 @@ jobs:
           usedocker: true
           docker_heroku_process_type: web
           stack: "container"
-          region: "us"
+          region: "eu"
         env:
           HD_BOT_TOKEN: ${{secrets.BOT_TOKEN}}
-          HD_OWNER_ID: "6227672248"
-          HD_TELEGRAM_API: "25902751"
-          HD_TELEGRAM_HASH: "3b36bdefea2a0ff714a1ae7d8b0c89e0"
+          HD_OWNER_ID: "5755368058"
+          HD_TELEGRAM_API: "2381992"
+          HD_TELEGRAM_HASH: "661ce2469998288dbac1147e10ff4d44"
           HD_DATABASE_URL: "mongodb+srv://user:41044104@cluster0l.pcf46se.mongodb.net/?retryWrites=true&w=majority"
           HD_BASE_URL: "https://${{secrets.HEROKU_APP_NAME}}.herokuapp.com"
           HD_STOP_DUPLICATE: "True"
