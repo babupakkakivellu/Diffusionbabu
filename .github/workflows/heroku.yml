@@ -15,7 +15,7 @@ jobs:
           usedocker: true
           docker_heroku_process_type: web
           stack: "container"
-          region: "eu"
+          region: "us"
         env:
           HD_BOT_TOKEN: ${{secrets.BOT_TOKEN}}
           HD_OWNER_ID: "5755368058"
