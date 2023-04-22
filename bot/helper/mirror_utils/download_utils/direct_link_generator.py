@@ -541,52 +541,13 @@ def solidfiles(url: str) -> str:
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'
     }
-    pageSource = rget(url, headers=headers).text
+ krakenfiles   pageSource = rget(url, headers=headers).text
     mainOptions = str(
         re_search(r'viewerOptions\'\,\ (.*?)\)\;', pageSource).group(1))
     return jsonloads(mainOptions)["downloadUrl"]
 
 
-def krakenfiles(page_link: str) -> str:
-    """ krakenfiles direct link generator
-    Based on https://github.com/tha23rd/py-kraken
-    By https://github.com/junedkh """
-    page_resp = rsession().get(page_link)
-    soup = BeautifulSoup(page_resp.text, "lxml")
-    try:
-        token = soup.find("input", id="dl-token")["value"]
-    except:
-        raise DirectDownloadLinkException(f"Page link is wrong: {page_link}")
-
-    hashes = [
-        item["data-file-hash"]
-        for item in soup.find_all("div", attrs={"data-file-hash": True})
-    ]
-    if not hashes:
-        raise DirectDownloadLinkException(
-            f"ERROR: Hash not found for : {page_link}")
-
-    dl_hash = hashes[0]
-
-    payload = f'------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name="token"\r\n\r\n{token}\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--'
-    headers = {
-        "content-type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-        "cache-control": "no-cache",
-        "hash": dl_hash,
-    }
-
-    dl_link_resp = rsession().post(
-        f"https://krakenfiles.com/download/{hash}", data=payload, headers=headers)
-
-    dl_link_json = dl_link_resp.json()
-
-    if "url" in dl_link_json:
-        return dl_link_json["url"]
-    else:
-        raise DirectDownloadLinkException(
-            f"ERROR: Failed to acquire download URL from kraken 
-
-					
+ 
 def gdtot(url):
     cget = create_scraper().request
     try:
