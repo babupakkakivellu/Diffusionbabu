@@ -26,10 +26,10 @@ def search_gdtot(update, context):
     text = ''
     for i, (title, inf, link) in enumerate(zip(titles, info, links), start=1):
         soup = BeautifulSoup(rget(link['href']).text, 'html.parser')
-        text += f"{str(i).zfill(3)}. {str(title).strip()}\n{inf}\n"
+        text += f"{str(i).zfill(3)}. <a href='{link['href']}'>{str(title).strip()}</a>\n{inf}\n"
         for x in soup.select('a'):
             link = x['href']
-            if any(x in link for x in ['new6.gdtot.cfd','drivebot.fun']):
+            if any(x in link for x in ['new7.gdtot.cfd','gdflix.lol']):
                 text += f"<a href='{link}'><b>{str(urlparse(link).hostname).upper()}</b></a> "
         text += '\n\n'
         sendMessage(text, context.bot, update.message)
