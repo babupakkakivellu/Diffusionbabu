@@ -19,8 +19,8 @@ def search_gdtot(update, context):
     else:
         sendMessage('Please provided movie title along with command or by reply with command!', context.bot, update.message)
         return
-    soup = BeautifulSoup(rget(f'https://gdbot.xyz/search?q={quote_plus(query)}').text, 'html.parser')
-    links = soup.select("a[href*='https://gdbot.xyz/file']")
+    soup = BeautifulSoup(rget(f'https://gdtot.pro/search?q={quote_plus(query)}').text, 'html.parser')
+    links = soup.select("a[href*='https://gdtot.pro/file']")
     info = [x.string for x in soup.find_all('span', string=re_compile(r'Size*'))]
     titles = [x.string for x in soup.find_all('a')[5:]]
     text = ''
