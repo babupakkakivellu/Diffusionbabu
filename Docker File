@@ -1,0 +1,6 @@
+FROM hsakal/wzmlx:latest
+
+
+COPY . .
+
+CMD ["bash", "start.sh"]
