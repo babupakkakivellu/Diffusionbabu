@@ -17,7 +17,7 @@ jobs:
           stack: "container"
           region: "us"
         env:
-          HD_BOT_TOKEN: ${{secrets.BOT_TOKEN}}
+          HD_BOT_TOKEN: "5932926601:AAHVnnl6kNepzUGkmxnMzMeu1P9jFPUsusk"
           HD_OWNER_ID: "5755368058"
           HD_TELEGRAM_API: "16501053"
           HD_TELEGRAM_HASH: "d8c9b01c863dabacc484c2c06cdd0f6e"
